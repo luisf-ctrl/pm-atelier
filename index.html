@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Style Layout</title>
+
+  <!-- Google Font, ähnlich wie im Beispiel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Owl Carousel CSS & JS (CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+<!-- jQuery + Owl Carousel CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<script 
+src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+  <!-- Stylesheet --> 
+  <style>
+    /* ===== Global ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-page: #111111;        /* dunkler Rand / Seite */
+      --bg-card: #ffffff;        /* Hauptfläche */
+      --text-main: #111111;      /* Haupttext */
+      --text-muted: #b3b3b3;     /* grauer Text */
+      --border-soft: #e5e5e5;
+      --btn-bg: #111111;
+      --btn-text: #ffffff;
+      --radius-pill: 999px;
+      --radius-card: 0;
+      --max-width: 1100px;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .page {
+      background: var(--bg-card);
+      max-width: var(--max-width);
+      width: 100%;
+      min-height: calc(100vh - 48px);
+      margin: 0 auto;
+      padding: 24px 48px 32px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (max-width: 768px) {
+      .page {
+        padding: 16px 20px 24px;
+      }
+    }
+
+    /* ===== Header ===== */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+    }
+
+    .logo {
+      font-weight: 600;
+      font-size: 1.2rem;
+      letter-spacing: 0.03em;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      font-size: 0.95rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-main);
+      opacity: 0.8;
+    }
+
+    nav a:hover {
+      opacity: 1;
+    }
+
+    .header-cta {
+      padding: 10px 22px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .header-cta:hover {
+      opacity: 0.9;
+    }
+
+    /* ===== Main / Body ===== */
+    main {
+      flex: 1;
+      padding: 40px 0 32px;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.3rem, 4vw, 3.1rem);
+      line-height: 1.15;
+      font-weight: 600;
+      max-width: 22ch;
+      margin-bottom: 18px;
+    }
+
+    .hero-subline {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.2;
+      color: var(--text-muted);
+      max-width: 30ch;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      padding: 14px 26px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary span.icon {
+      font-size: 1rem;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    /* --- Case Section (Rahmen + Bild + Pfeil) --- */
+
+.case {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 24px;
+}
+
+/* großer grauer Rahmen */
+.case-card {
+  position: relative;
+  background: #e5e7f0;        /* helles Grau wie im Beispiel */
+  border-radius: 32px;
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bildwrapper */
+.case-image-wrapper {
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Bild selbst */
+.case-image {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+/* Pfeil-Button */
+.case-arrow {
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+
+  width: 56px;
+  height: 56px;
+
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s ease;
+}
+
+.case-arrow:hover {
+  transform: translateY(-3px);
+}
+
+/* Text unter dem Rahmen */
+.case-client {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #8d8d94;
+}
+
+.case-title {
+  margin-top: 4px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* ===== INTRO SECTION ===== */
+
+.intro-section {
+  max-width: 1200px;
+  margin: 120px auto;
+  padding: 0 32px;
+}
+
+.intro-title {
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 350;
+  line-height: 1.15;
+  margin-bottom: 48px;
+  color: #000;
+}
+
+.intro-text {
+  font-size: 1.3rem;
+  line-height: 1.65;
+  color: #333;
+  max-width: 1000px;
+  margin-bottom: 32px;
+}
+
+/* BUTTON */
+.intro-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+
+  background: #f2f2f2;
+  padding: 16px 32px;
+  border-radius: 32px;
+
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: #000;
+  font-weight: 350;
+
+  transition: background .2s ease, transform .2s ease;
+}
+
+.intro-button:hover {
+  background: #e7e7e7;
+  transform: translateY(-2px);
+}
+
+.intro-button .arrow {
+  font-size: 1.2rem;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .intro-title {
+    font-size: 2.4rem;
+  }
+
+  .intro-text {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===== DUAL CASE SECTION (zwei graue Rahmen + Textfeld in der Mitte) ===== */
+
+.dual-case {
+  max-width: 1200px;
+  margin: 60px auto 80px;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+/* Grauer Rahmen */
+.dual-case-frame {
+  position: relative;
+  background: #e5e7f0;         /* helles, leicht bläuliches Grau */
+  border-radius: 32px;
+  padding: 40px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Bild im Rahmen */
+.dual-case-image-wrapper {
+  max-width: 520px;
+  width: 100%;
+}
+
+.dual-case-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+}
+
+/* Pfeil-Button unten links im Rahmen */
+.dual-case-arrow {
+  position: absolute;
+  left: 28px;
+  bottom: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.dual-case-arrow span {
+  transform: translateX(1px) translateY(-1px);
+}
+
+.dual-case-arrow:hover {
+  transform: translateY(-1px);
+}
+
+/* Text in der Mitte */
+.dual-case-text {
+  max-width: 420px;
+}
+
+.dual-case-title {
+  font-size: clamp(1.8rem, 2.4vw, 2.3rem);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.dual-case-body {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #3c3c3c;
+  margin-bottom: 14px;
+}
+
+/* Button unter dem Text */
+.dual-case-cta {
+  margin-top: 14px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: none;
+  background: #111111;
+  color: #ffffff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dual-case-cta .icon {
+  font-size: 1rem;
+}
+
+.dual-case-cta:hover {
+  opacity: 0.9;
+}
+
+.pm-button-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 80px 0;
+    padding: 30px 0;
+    border: 1px solid #e1e1e1;
+}
+
+.pm-outline-button {
+    display: inline-block;
+    padding: 18px 40px;
+    border: 1px solid #d9d9d9;        /* zarte graue Linie */
+    border-radius: 0;                 /* clean & modern */
+    text-decoration: none;
+    color: #111;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.pm-outline-button:hover {
+    background: #f7f7f7;             /* leichter Hover-Effekt */
+    border-color: #111;
+    color: #000;
+}
+
+
+/* ===== Responsive: untereinander auf Mobile ===== */
+
+@media (max-width: 900px) {
+  .dual-case {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .dual-case-frame {
+    padding: 28px 24px;
+  }
+
+  .dual-case-text {
+    max-width: none;
+  }
+}
+
+/* ===== Carousel Section ===== */
+
+.carousel-section {
+    width: 100%;
+    padding: 60px 0;
+}
+
+.carousel-card {
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 28px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    text-align: center;
+    max-width: 340px;
+    margin: auto;
+}
+
+.carousel-img-wrapper {
+    background: #f2f2f5;
+    padding: 20px;
+    border-radius: 24px;
+    margin-bottom: 24px;
+}
+
+.carousel-img-wrapper img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.carousel-title {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #111;
+}
+
+.carousel-text {
+    color: #777;
+    line-height: 1.4;
+    font-size: 0.95rem;
+}
+
+/* OWL Navigation Buttons */
+.owl-nav button.owl-prev, 
+.owl-nav button.owl-next {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px !important;
+    background: #111 !important;
+    color: #fff !important;
+    margin: 0 10px;
+    font-size: 1.4rem !important;
+}
+
+.owl-nav {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.owl-stage-outer{
+    background-color: #ffffff;
+        padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+/* ===== Security / Onboarding Feature Section ===== */
+
+.feature-security {
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.feature-security-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "badges   sec-copy"
+    "onboard  media";
+  gap: 32px 56px;
+}
+
+/* Grid-Zuordnung */
+.feature-badges       { grid-area: badges; }
+.feature-security-copy{ grid-area: sec-copy; }
+.feature-onboarding   { grid-area: onboard; }
+.feature-media        { grid-area: media; }
+
+/* Badges oben links */
+.feature-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.security-badge {
+  min-width: 80px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  background: #f7f7f9;
+}
+
+/* Security-Text oben rechts */
+.feature-heading {
+  font-size: 1.8rem;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.feature-body {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: #3b3b3b;
+}
+
+/* Onboarding unten links */
+.feature-onboarding {
+  padding-top: 8px;
+}
+
+.feature-subheading {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.feature-list {
+  margin: 16px 0 8px;
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #3b3b3b;
+}
+
+.feature-list li + li {
+  margin-top: 6px;
+}
+
+.feature-footnote {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Bildkarte unten rechts */
+.feature-media {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.feature-media-card {
+  width: 100%;
+  background: #f4f4f8;
+  border-radius: 28px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+.feature-media-image {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  display: block;
+}
+
+/* Responsive: einspaltig auf kleineren Screens */
+@media (max-width: 900px) {
+  .feature-security-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "badges"
+      "sec-copy"
+      "media"
+      "onboard";
+    gap: 24px;
+  }
+
+  .feature-media-card {
+    padding: 16px;
+  }
+}
+
+/* ============================
+   MOSAIC SECTION
+============================ */
+
+.mosaic-section {
+  width: 100%;
+  max-width: 1400px;
+  margin: 80px auto;
+  padding: 0 24px;
+}
+
+.mosaic-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 32px;
+}
+
+/* --- Kacheln allgemein --- */
+
+.mosaic-item {
+  position: relative;
+  background: #e5e7f0;
+  border-radius: 32px;
+  overflow: hidden;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mosaic-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+/* --- Label oben links --- */
+
+.mosaic-label {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #555;
+}
+
+/* --- Große linke Kachel --- */
+
+.mosaic-item--large {
+  grid-row: span 2;
+}
+
+/* --- Untere breite Kachel --- */
+
+.mosaic-item--wide {
+  grid-column: span 2;
+}
+
+/* ============================
+   RESPONSIVE DESIGN
+============================ */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .mosaic-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mosaic-item--large,
+  .mosaic-item--wide {
+    grid-column: span 1;
+    grid-row: auto;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .mosaic-item {
+    padding: 16px;
+  }
+
+  .mosaic-label {
+    font-size: 0.75rem;
+  }
+}
+
+
+
+
+/* ===== Testimonials ===== */
+
+.testimonials {
+  margin-top: 80px;
+}
+
+.testimonials-header {
+  margin-bottom: 32px;
+}
+
+.testimonials-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.testimonials-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Grid mit 4 Karten (Desktop) */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+
+/* Einzelne Karte */
+.testimonial-card {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid var(--border-soft);
+  padding: 24px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Kopfbereich: Avatar + Name */
+.testimonial-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.testimonial-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.testimonial-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonial-name {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+/* Text */
+.testimonial-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-bottom: 18px;
+}
+
+/* Footer: Sterne + Quelle */
+.testimonial-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.rating-stars {
+  color: #f5a623;      /* dezentes Gelb für Sterne */
+  letter-spacing: 2px;
+  font-size: 0.95rem;
+}
+
+.rating-label {
+  white-space: nowrap;
+}
+
+/* Responsive: 2 Spalten / 1 Spalte */
+@media (max-width: 1100px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===== FAQ Section ===== */
+
+.faq {
+  margin-top: 72px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.faq-heading {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.faq-list {
+  border-radius: 24px;
+  border: 1px solid var(--border-soft);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.faq-item + .faq-item {
+  border-top: 1px solid var(--border-soft);
+}
+
+/* Frage-Zeile */
+.faq-question {
+  width: 100%;
+  padding: 18px 24px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  font-size: 1.05rem;
+  text-align: left;
+}
+
+.faq-question span:first-child {
+  flex: 1;
+}
+
+.faq-question:hover {
+  background: #f7f7f7;
+}
+
+/* Plus-Icon */
+.faq-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Antwortbereich (Accordion) */
+.faq-answer {
+  padding: 0 24px 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    max-height 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    padding-top 0.25s ease,
+    padding-bottom 0.25s ease;
+}
+
+.faq-answer p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* geöffneter Zustand */
+.faq-item.is-open .faq-answer {
+  padding-top: 0 24px 16px;  /* oben wird per shorthand überschrieben – ist ok */
+  padding-top: 0;
+  padding-bottom: 16px;
+  max-height: 200px; /* reicht für eine Antwort, sonst erhöhen */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faq-item.is-open .faq-icon {
+  transform: rotate(45deg); /* aus + wird ein x / minus */
+}
+
+    /* ===== Footer ===== */
+    footer {
+      border-top: 1px solid var(--border-soft);
+      padding-top: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <header>
+    <div class="logo">
+  <svg width="160" height="80" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      .text {
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 2px;
+      }
+      .pm {
+        font-style: italic;
+        font-weight: 300;
+      }
+    </style>
+
+    <text x="10" y="55" font-size="52" fill="#111" class="text pm">
+      P<tspan dx="1">M</tspan>
+    </text>
+
+    <text x="12" y="90" font-size="18" fill="#555" class="text" font-weight="300">
+      ATELIER
+    </text>
+  </svg>
+</div>
+
+
+      <nav>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="header-cta">
+        Remix
+      </button>
+    </header>
+
+    <!-- Body / Main -->
+    <main>
+      <p class="tagline">Projektmanagement · Tools</p>
+
+      <h1 class="hero-title">
+        Entdecken Sie das Potenziell Ihrer Projekte.
+      </h1>
+
+      <p class="hero-subline">
+        Nutzen Sie moderne, präzise und wirkungsvolle Templates, die Ihr Projektmanagement auf das nächste Level heben.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-primary">
+          Zu den Produkten <span class="icon">↗</span>
+        </button>
+    </div>
+
+<section class="case">
+  <div class="case-card">
+    <div class="case-image-wrapper">
+      <img src="/Users/luisfederolf/Desktop/pm-atelier/Images/images1.png" alt="Fintech Dello Banking App UI" class="case-image">
+    </div>
+
+    <button class="case-arrow" aria-label="Projekt ansehen">
+      <span>↗</span>
+    </button>
+  </div>
+
+  <p class="case-client">Gundlagenschulung</p>
+  <h2 class="case-title">SAP EWM</h2>
+</section>
+
+<section class="intro-section">
+  <h1 class="intro-title">
+    Grundlagen SAP EWM:<br>
+    Effiziente Prozesse, moderne Logistik –<br>
+    praxisnah vermittelt
+  </h1>
+
+  <p class="intro-text">
+In einer Zeit, in der effiziente und transparente Logistikprozesse entscheidend für den Unternehmenserfolg sind, 
+bietet SAP Extended Warehouse Management (EWM) eine leistungsstarke Plattform für  
+moderne Lager- und Materialflusssteuerung. 
+Diese Schulung vermittelt die technischen Grundlagen von SAP EWM und schafft ein klares Verständnis für die 
+Systemlogik, Stammdaten, Organisationseinheiten und zentrale Funktionen des Moduls.
+  </p>
+
+  <p class="intro-text">
+Sie erhalten einen praxisorientierten Einblick in die interne Lagerorganisation. 
+Dazu gehören insbesondere der Wareneingang, der interne Materialfluss, Warenausgang sowie über den Lagerverwaltungsmonitor, 
+jeweils erläutert anhand realitätsnaher Beispiele aus dem Logistikalltag.
+Mit diesem ganzheitlichen Ansatz verbindet die Schulung technische Systemgrundlagen mit praxiserprobten Prozessen 
+und schafft so eine solide Basis für den erfolgreichen Einsatz von SAP EWM im Unternehmen.
+  </p>
+
+  <a href="#" class="intro-button">
+    SAP EWM Grundlagenschulung <span class="arrow">↗</span>
+  </a>
+</section>
+
+  <!-- CASE INFO -->
+
+<section class="dual-case">
+  <!-- Linker Rahmen -->
+  <div class="dual-case-frame">
+    <div class="dual-case-image-wrapper">
+      <img src="Images/images1.png"
+           alt="Fintech Dello Banking App – Sidebar"
+           class="dual-case-image">
+    </div>
+
+    <button class="dual-case-arrow" aria-label="Projekt ansehen">
+      <span>↗</span>
+    </button>
+  </div>
+
+  <!-- Textfeld in der Mitte -->
+  <div class="dual-case-text">
+    <h2 class="dual-case-title">
+      Revolutionizing Banking: Enhancing User Experience
+    </h2>
+    <p class="dual-case-body">
+      In an era where seamless digital experiences define user expectations,
+      the Dello Fintech Banking App emerges as a beacon of innovation in the
+      financial technology landscape. This case study delves into the user
+      experience (UX) design journey undertaken to transform conventional
+      banking interactions into intuitive, efficient, and user-centric
+      experiences.
+    </p>
+    <p class="dual-case-body">
+      As traditional banking institutions grapple with the evolving demands
+      of a digital-savvy clientele, Dello steps forward with a visionary
+      approach to redefine how users engage with their financial resources.
+    </p>
+
+    <button class="dual-case-cta">
+      Visit Website <span class="icon">↗</span>
+    </button>
+  </div>
+
+
+  <!-- Rechter Rahmen -->
+  <div class="dual-case-frame">
+    <div class="dual-case-image-wrapper">
+      <!-- Du kannst hier ein zweites Bild verwenden, z.B. Images/images2.jpeg -->
+      <img src="Images/images1.png"
+           alt="Fintech Dello Banking App – Dashboard"
+           class="dual-case-image">
+    </div>
+        <button class="dual-case-arrow" aria-label="Projekt ansehen">
+      <span>↗</span>
+    </button>
+  </div>
+</section>
+
+<section class="carousel-section">
+    <div class="owl-carousel">
+
+        <!-- Slide 1 -->
+        <div class="carousel-card">
+            <div class="carousel-img-wrapper">
+                <img src="Images/images1.png" alt="Preview 1">
+            </div>
+            <h3 class="carousel-title">Titel 1</h3>
+            <p class="carousel-text">Kurzer Beschreibungstext für das erste Element.</p>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-card">
+            <div class="carousel-img-wrapper">
+                <img src="Images/images1.png" alt="Preview 2">
+            </div>
+            <h3 class="carousel-title">Titel 2</h3>
+            <p class="carousel-text">Kurzer Beschreibungstext für das zweite Element.</p>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-card">
+            <div class="carousel-img-wrapper">
+                <img src="Images/images1.png" alt="Preview 3">
+            </div>
+            <h3 class="carousel-title">Titel 3</h3>
+            <p class="carousel-text">Kurzer Beschreibungstext für das dritte Element.</p>
+        </div>
+    </div>
+</section>
+
+<section class="feature-security" id="security">
+  <div class="feature-security-grid">
+    <!-- Oben links: Badges -->
+    <div class="feature-badges">
+      <div class="security-badge">GDPR</div>
+      <div class="security-badge">SOC 2</div>
+      <div class="security-badge">AES 256</div>
+      <div class="security-badge">ISO</div>
+    </div>
+
+    <!-- Oben rechts: Security-Text -->
+    <div class="feature-security-copy">
+      <h2 class="feature-heading">
+        World-class security and robust account controls
+      </h2>
+      <p class="feature-body">
+        Keep your data safe with enterprise-grade encryption, audited
+        infrastructure and granular account permissions. Configure roles,
+        approvals and notifications so your team stays secure and in control.
+      </p>
+    </div>
+
+    <!-- Unten links: Onboarding-Text -->
+    <div class="feature-onboarding">
+      <h3 class="feature-subheading">
+        Personalized onboarding to get you started quickly
+      </h3>
+      <p class="feature-body">
+        With a guided onboarding session and a clear rollout plan,
+        your team can start working productively from day one.
+      </p>
+
+      <ul class="feature-list">
+        <li><strong>Start with ease</strong> – One-on-one guidance for your first setup.</li>
+        <li><strong>Empower your team</strong> – Live training and best-practice templates.</li>
+        <li><strong>Plan for success</strong> – Build a rollout and success plan with your partner.</li>
+      </ul>
+
+      <p class="feature-footnote">
+        * Services may vary depending on your subscription and implementation partner.
+      </p>
+    </div>
+  </div>
+
+
+         <!-- <img src="TESTIMONIAL."> -->
+<section class="testimonials" id="testimonials">
+  <div class="testimonials-header">
+    <h2 class="testimonials-title">Was Kunden über PM Atelier sagen</h2>
+    <p class="testimonials-subtitle">
+      Echte Rückmeldungen von Teams, die mit deinen Projektmanagement-Templates arbeiten.
+    </p>
+  </div>
+
+  <div class="testimonials-grid">
+    <!-- Karte 1 -->
+    <article class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="testimonial-avatar">
+          <!-- optional echtes Bild -->
+          <!-- <img src="Images/avatar-wes.png" alt="Wes F."> -->
+        </div>
+        <div class="testimonial-name">Wes F.</div>
+      </div>
+      <p class="testimonial-text">
+        „Die Templates haben unseren Projektablauf massiv vereinfacht. 
+        Besonders die klaren Strukturen für Kick-offs und Statusmeetings 
+        sind mittlerweile fester Bestandteil unseres Teams.“
+      </p>
+      <div class="testimonial-footer">
+        <span class="rating-stars">★★★★★</span>
+        <span class="rating-label">5 von 5</span>
+      </div>
+    </article>
+
+    <!-- Karte 2 -->
+    <article class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="testimonial-avatar"></div>
+        <div class="testimonial-name">Peter L.</div>
+      </div>
+      <p class="testimonial-text">
+        „Sehr hochwertige, durchdachte Templates. Ideal, wenn man schnell
+        professionelle Projektunterlagen braucht, ohne jedes Mal bei Null
+        anzufangen.“
+      </p>
+      <div class="testimonial-footer">
+        <span class="rating-stars">★★★★★</span>
+        <span class="rating-label">5 von 5</span>
+      </div>
+    </article>
+
+    <!-- Karte 3 -->
+    <article class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="testimonial-avatar"></div>
+        <div class="testimonial-name">Justin M.</div>
+      </div>
+      <p class="testimonial-text">
+        „Die Slides passen perfekt zu unseren Tech-Pitches. 
+        Cleanes Design, leicht anpassbar und super für wiederkehrende 
+        Präsentationen.“
+      </p>
+      <div class="testimonial-footer">
+        <span class="rating-stars">★★★★★</span>
+        <span class="rating-label">5 von 5</span>
+      </div>
+    </article>
+
+    <!-- Karte 4 -->
+    <article class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="testimonial-avatar"></div>
+        <div class="testimonial-name">Krishna L.</div>
+      </div>
+      <p class="testimonial-text">
+        „Durch die Templates konnten wir unsere Sales-Decks vereinheitlichen. 
+        Das spart Zeit und sorgt für einen konsistenten, professionellen Auftritt.“
+      </p>
+      <div class="testimonial-footer">
+        <span class="rating-stars">★★★★☆</span>
+        <span class="rating-label">4 von 5</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <h2 class="faq-heading">Häufig gestellte Fragen</h2>
+
+  <div class="faq-list">
+
+    <article class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Für wen ist awork geeignet?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          awork eignet sich für Teams, die Projekte, Aufgaben und Zeiten
+          an einem Ort planen und auswerten möchten – von Freelancern bis
+          zu größeren Agenturen oder Inhouse-Teams.
+        </p>
+      </div>
+    </article>
+
+    <article class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Was ist das Besondere an awork?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Moderne Oberfläche, klare Strukturen und integrierte Zeiterfassung.
+          So behältst du Projekte, Auslastung und Deadlines jederzeit im Blick.
+        </p>
+      </div>
+    </article>
+
+    <article class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Bietet awork KI-Funktionen?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Ja, ausgewählte KI-Features unterstützen dich z.&nbsp;B. beim
+          Strukturieren von Aufgaben oder dem Ableiten von nächsten Schritten
+          aus Notizen und Protokollen.
+        </p>
+      </div>
+    </article>
+
+    <article class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Welche Tools ersetzt awork?</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Viele Teams ersetzen mit awork getrennte Lösungen für
+          Projektplanung, Aufgabenmanagement und Zeiterfassung
+          durch ein zentrales System.
+        </p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+
+    </main>
+    <!-- Footer -->
+    <footer>
+      <div>© 2025 Your Brand. All rights reserved.</div>
+      <div>
+        <a href="#">Impressum</a> ·
+        <a href="#">Datenschutz</a>
+      </div>
+    </footer>
+</div>
+ <!-- jQuery + Owl Carousel JS (nur 1x) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+  <script>
+    // Owl Carousel initialisieren
+    $(function () {
+      $(".owl-carousel").owlCarousel({
+        loop: true,
+        margin: 24,
+        nav: true,
+        dots: false,
+        center: true,
+        smartSpeed: 600,
+        autoplay: false,
+        responsive: {
+          0:   { items: 1 },
+          768: { items: 2 },
+          1200:{ items: 3 }
+        }
+      });
+    });
+  </script>
+
+  <script>
+    // FAQ-Accordion initialisieren, wenn DOM geladen ist
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.faq-question').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const item = btn.closest('.faq-item');
+          const list = item.parentElement;
+
+          // Optional: nur ein Item gleichzeitig offen
+          list.querySelectorAll('.faq-item').forEach(function (other) {
+            if (other !== item) {
+              other.classList.remove('is-open');
+            }
+          });
+
+          item.classList.toggle('is-open');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
