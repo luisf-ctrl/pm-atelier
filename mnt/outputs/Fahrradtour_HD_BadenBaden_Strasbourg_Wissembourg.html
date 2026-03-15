@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radtour – HD → Baden-Baden → Strasbourg → Wissembourg → HD</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f5f0eb; color: #2d2d2d; line-height: 1.7; }
+
+    .hero {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2a6496 40%, #4a90c4 100%);
+      color: white; padding: 50px 40px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='8' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") repeat; }
+    .hero h1 { font-size: 2em; font-weight: 700; margin-bottom: 8px; position: relative; }
+    .hero .subtitle { font-size: 0.95em; font-weight: 300; opacity: 0.9; position: relative; line-height: 1.5; }
+    .hero .flags { font-size: 1.4em; margin-bottom: 10px; position: relative; }
+
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    .overview {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+      margin: -40px auto 40px; position: relative; z-index: 1; max-width: 880px; padding: 0 24px;
+    }
+    .stat-card { background: white; border-radius: 12px; padding: 18px 12px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .stat-card .number { font-size: 1.6em; font-weight: 700; color: #2a6496; }
+    .stat-card .label { font-size: 0.78em; color: #777; margin-top: 4px; }
+
+    .section-title { font-size: 1.4em; font-weight: 600; color: #2a6496; margin: 44px 0 20px; padding-bottom: 8px; border-bottom: 2px solid #c8d8e4; }
+
+    .route-map {
+      background: white; border-radius: 16px; padding: 24px 20px; margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .route-visual {
+      display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px 8px;
+      font-size: 0.82em; font-weight: 500; color: #555; padding: 14px 0;
+    }
+    .route-visual .city { padding: 5px 12px; border-radius: 20px; font-weight: 600; white-space: nowrap; }
+    .route-visual .city.de { background: #e8f0f8; color: #2a5a8a; }
+    .route-visual .city.fr { background: #f0e8f5; color: #6b3a8a; }
+    .route-visual .city.start { background: #2a6496; color: white; }
+    .route-visual .arrow { color: #ccc; font-size: 1em; }
+    .route-visual .km-label { font-size: 0.7em; color: #aaa; display: block; text-align: center; }
+
+    .etappe {
+      background: white; border-radius: 16px; padding: 26px 30px; margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06); position: relative;
+    }
+    .etappe.de { border-left: 5px solid #2a6496; }
+    .etappe.fr { border-left: 5px solid #7b2d6e; }
+    .etappe-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+    .etappe-day { font-size: 0.72em; font-weight: 600; color: white; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .etappe.de .etappe-day { background: #2a6496; }
+    .etappe.fr .etappe-day { background: #7b2d6e; }
+    .etappe-date { font-size: 0.83em; color: #999; font-weight: 500; }
+    .etappe-route { font-size: 1.25em; font-weight: 600; color: #2d2d2d; margin-bottom: 5px; }
+    .etappe-meta { display: flex; gap: 18px; margin-bottom: 12px; flex-wrap: wrap; }
+    .etappe-meta span { font-size: 0.88em; color: #666; display: flex; align-items: center; gap: 5px; }
+    .etappe-desc { color: #444; font-size: 0.93em; margin-bottom: 12px; }
+
+    .besichtigung { background: #fafafa; border-radius: 12px; padding: 16px 20px; margin-top: 12px; border: 1px solid #eee; }
+    .besichtigung h4 { font-size: 0.83em; margin-bottom: 10px; font-weight: 600; }
+    .etappe.de .besichtigung h4 { color: #2a6496; }
+    .etappe.fr .besichtigung h4 { color: #7b2d6e; }
+    .besichtigung-item { display: flex; gap: 10px; margin-bottom: 8px; font-size: 0.86em; color: #555; align-items: flex-start; }
+    .besichtigung-item:last-child { margin-bottom: 0; }
+    .besichtigung-item .icon { flex-shrink: 0; width: 22px; text-align: center; }
+    .besichtigung-item strong { color: #333; }
+
+    .uebernachtung {
+      background: linear-gradient(135deg, #f8f5f0 0%, #f0ebe4 100%);
+      border: 1px solid #e0d5c8; border-radius: 12px; padding: 16px 20px; margin-top: 14px;
+    }
+    .uebernachtung h4 { font-size: 0.83em; color: #8a6b2a; margin-bottom: 8px; font-weight: 600; }
+    .uebernachtung p { font-size: 0.86em; color: #666; }
+    .uebernachtung strong { color: #555; }
+
+    .tip-box { background: #fff8ec; border: 1px solid #f0d9a8; border-radius: 12px; padding: 18px 22px; margin: 20px 0; }
+    .tip-box h3 { color: #8a6b2a; font-size: 0.95em; margin-bottom: 6px; }
+    .tip-box p { font-size: 0.88em; color: #666; }
+
+    .checklist { background: white; border-radius: 16px; padding: 24px 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 18px; }
+    .checklist h3 { font-size: 1em; color: #2a6496; margin-bottom: 12px; }
+    .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 24px; }
+    .checklist-item { display: flex; align-items: center; gap: 8px; font-size: 0.86em; color: #555; padding: 3px 0; }
+    .checklist-item::before { content: '\u2610'; font-size: 1.1em; color: #2a6496; }
+
+    .footer { text-align: center; padding: 32px; color: #aaa; font-size: 0.85em; }
+
+    @media (max-width: 700px) {
+      .overview { grid-template-columns: repeat(2, 1fr); }
+      .checklist-grid { grid-template-columns: 1fr; }
+      .hero { padding: 36px 20px; }
+      .hero h1 { font-size: 1.5em; }
+      .etappe { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="flags">&#x1f1e9;&#x1f1ea; &#x1f6b2; &#x1f1eb;&#x1f1f7; &#x1f6b2; &#x1f1e9;&#x1f1ea;</div>
+    <h1>Heidelberg &#x2192; Baden-Baden &#x2192; Strasbourg &#x2192; Wissembourg &#x2192; Heidelberg</h1>
+    <div class="subtitle">4-Tage-Rundtour &bull; 03.&ndash;06. April 2026 &bull; 2 L&auml;nder &bull; 1 gro&szlig;e Rheinschleife</div>
+  </div>
+
+  <div class="overview">
+    <div class="stat-card">
+      <div class="number">4</div>
+      <div class="label">Tage</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">~280</div>
+      <div class="label">Kilometer</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">~70</div>
+      <div class="label">km / Tag (&Oslash;)</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">3</div>
+      <div class="label">&Uuml;bernachtungen</div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="tip-box">
+      <h3>&#x1f4a1; Tour&uuml;bersicht</h3>
+      <p>Eine elegante Rhein-Rundschleife: <strong>S&uuml;dw&auml;rts</strong> auf der deutschen Seite &uuml;ber Karlsruhe nach Baden-Baden, dann &uuml;ber den Rhein nach <strong>Strasbourg</strong>. <strong>Nordw&auml;rts</strong> durch das n&ouml;rdliche Elsass und die Pfalz &uuml;ber <strong>Wissembourg</strong> zur&uuml;ck nach Heidelberg. Fast durchgehend flach in der Rheinebene &ndash; perfekt f&uuml;r euer moderates Tempo.</p>
+    </div>
+
+    <!-- ROUTE VISUAL -->
+    <div class="route-map">
+      <div class="route-visual">
+        <span class="city start">Heidelberg</span>
+        <span class="arrow">&rarr;</span>
+        <span class="city de">Karlsruhe</span>
+        <span class="arrow">&rarr;</span>
+        <span class="city de">Baden-Baden</span>
+        <span class="arrow">&rarr;</span>
+        <span class="city fr">Strasbourg</span>
+        <span class="arrow">&rarr;</span>
+        <span class="city fr">Haguenau</span>
+        <span class="arrow">&rarr;</span>
+        <span class="city fr">Wissembourg</span>
+        <span class="arrow">&rarr;</span>
+        <span class="city de">Speyer</span>
+        <span class="arrow">&rarr;</span>
+        <span class="city start">Heidelberg</span>
+      </div>
+    </div>
+
+    <h2 class="section-title">&#x1f5fa;&#xfe0f; Die 4 Etappen</h2>
+
+    <!-- ==================== TAG 1 ==================== -->
+    <div class="etappe de">
+      <div class="etappe-header">
+        <span class="etappe-day">Tag 1</span>
+        <span class="etappe-date">Freitag, 03. April</span>
+      </div>
+      <div class="etappe-route">Heidelberg &rarr; Baden-Baden</div>
+      <div class="etappe-meta">
+        <span>&#x1f4cf; ca. 85 km</span>
+        <span>&#x2b06;&#xfe0f; flach (Rheinebene)</span>
+        <span>&#x1f6e3;&#xfe0f; Kurpfalz-Route / Paneuropa-Radweg</span>
+      </div>
+      <div class="etappe-desc">
+        Die l&auml;ngste Etappe, aber topfeben durch die Rheinebene. Von Heidelberg &uuml;ber Schwetzingen und Bruchsal nach Karlsruhe, dann s&uuml;dw&auml;rts &uuml;ber Ettlingen und Rastatt nach Baden-Baden. Startet fr&uuml;h (8:00), macht Pausen in Bruchsal und Karlsruhe, und ihr seid nachmittags da. Belohnung am Abend: <strong>Therme!</strong>
+      </div>
+      <div class="besichtigung">
+        <h4>&#x1f3db;&#xfe0f; Besichtigungen unterwegs</h4>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f33a;</span>
+          <span><strong>Schwetzinger Schlossgarten</strong> &ndash; Barockgarten mit Moschee und T&uuml;rkischem Garten. Schneller Stopp (45 Min.), Eintritt ~6&euro;.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3f0;</span>
+          <span><strong>Schloss Bruchsal</strong> &ndash; Barockschloss mit dem ber&uuml;hmten Treppenhaus von Balthasar Neumann. Deutsches Musikautomaten-Museum!</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3db;&#xfe0f;</span>
+          <span><strong>Karlsruhe &ndash; Schloss</strong> &ndash; Die Stadt ist sternf&ouml;rmig ums Schloss gebaut. Schlossgarten f&uuml;r die Mittagspause.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3f0;</span>
+          <span><strong>Schloss Rastatt</strong> &ndash; Erstes Barockschloss am Oberrhein. Kurzer Stopp auf dem Weg.</span>
+        </div>
+      </div>
+      <div class="besichtigung" style="margin-top: 14px;">
+        <h4>&#x2668;&#xfe0f; Abend in Baden-Baden</h4>
+        <div class="besichtigung-item">
+          <span class="icon">&#x2668;&#xfe0f;</span>
+          <span><strong>Caracalla Therme</strong> &ndash; Thermalwasser auf 32&ndash;38&deg;C, Au&szlig;enbecken, Saunalandschaft. Eintritt ca. 25&euro;/3 Std. <em>Perfekt nach 85 km!</em></span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3b0;</span>
+          <span><strong>Kurhaus &amp; Casino</strong> &ndash; Prunkvollstes Casino Deutschlands. Mindestens von au&szlig;en beeindruckend. Davor die Lichtentaler Allee &ndash; sch&ouml;nster Spaziergang der Stadt.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f377;</span>
+          <span><strong>Badische Weinprobe</strong> &ndash; Baden-Baden ist umgeben von Rebland. Sp&auml;tburgunder aus der Region ist top!</span>
+        </div>
+      </div>
+      <div class="uebernachtung">
+        <h4>&#x1f3e8; &Uuml;bernachtung: Baden-Baden</h4>
+        <p><strong>Hotel am Sophienpark</strong> &ndash; Zentral, gem&uuml;tlich, gutes Preis-Leistungs-Verh&auml;ltnis. Oder <strong>Hotel Aqua Aurelia</strong> &ndash; direkt neben der Therme! F&uuml;r mehr Budget: <strong>Radisson Blu</strong> im Zentrum.</p>
+      </div>
+    </div>
+
+    <!-- ==================== TAG 2 ==================== -->
+    <div class="etappe fr">
+      <div class="etappe-header">
+        <span class="etappe-day">Tag 2 &ndash; Bienvenue en France!</span>
+        <span class="etappe-date">Samstag, 04. April</span>
+      </div>
+      <div class="etappe-route">Baden-Baden &rarr; Strasbourg</div>
+      <div class="etappe-meta">
+        <span>&#x1f4cf; ca. 65 km</span>
+        <span>&#x2b06;&#xfe0f; flach</span>
+        <span>&#x1f6e3;&#xfe0f; Rheinradweg &rarr; Kehl &rarr; Strasbourg</span>
+      </div>
+      <div class="etappe-desc">
+        Moderate Etappe mit einem Highlight am Ende: <strong>Strasbourg!</strong> Von Baden-Baden s&uuml;dw&auml;rts &uuml;ber B&uuml;hl und Achern nach Offenburg, dann westwärts &uuml;ber Kehl &uuml;ber den Rhein nach Frankreich. Checkt fr&uuml;h ein und nutzt den Nachmittag &amp; Abend voll f&uuml;r die Stadt &ndash; es gibt massiv viel zu sehen.
+      </div>
+      <div class="besichtigung">
+        <h4>&#x1f3db;&#xfe0f; Unterwegs</h4>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3d8;&#xfe0f;</span>
+          <span><strong>Offenburg</strong> &ndash; H&uuml;bsche Altstadt mit Fischmarkt und historischem Rathaus. Guter Mittagsstopp.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f309;</span>
+          <span><strong>Passerelle des Deux Rives</strong> &ndash; Rad-/Fu&szlig;br&uuml;cke zwischen Kehl und Strasbourg. Der symbolische Moment: ihr radelt &uuml;ber den Rhein nach Frankreich!</span>
+        </div>
+      </div>
+      <div class="besichtigung" style="margin-top: 14px;">
+        <h4>&#x1f3db;&#xfe0f; Nachmittag &amp; Abend in Strasbourg</h4>
+        <div class="besichtigung-item">
+          <span class="icon">&#x26ea;</span>
+          <span><strong>Strasbourger M&uuml;nster</strong> &ndash; Gotische Kathedrale, 142 m hoch. Astronomische Uhr (t&auml;glich 12:30 Vorstellung). Plattform auf 66 m &ndash; 332 Stufen, gigantischer Ausblick bis zum Schwarzwald.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3d8;&#xfe0f;</span>
+          <span><strong>Petite France</strong> &ndash; DAS Postkartenmotiv: Fachwerkh&auml;user an den Ill-Kan&auml;len. Abends mit Beleuchtung magisch.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3e0;</span>
+          <span><strong>Gedeckte Br&uuml;cken &amp; Barrage Vauban</strong> &ndash; Panoramaterrasse &uuml;ber der Altstadt. Kostenlos!</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f6f6;</span>
+          <span><strong>Bootsfahrt auf der Ill</strong> &ndash; 70 Min. durch Petite France und zum Europaviertel. ~14&euro;, sehr lohnenswert.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f32e;</span>
+          <span><strong>Essen!</strong> &ndash; Flammkuchen ist Pflicht. Choucroute garnie, Baeckeoffe, dazu Riesling oder Gew&uuml;rztraminer. Gute Winstubs: <em>Au Pont Saint-Martin</em>, <em>Chez Yvonne</em>, <em>Le Clou</em>.</span>
+        </div>
+      </div>
+      <div class="uebernachtung">
+        <h4>&#x1f3e8; &Uuml;bernachtung: Strasbourg</h4>
+        <p><strong>H&ocirc;tel Cour du Corbeau</strong> &ndash; Historisch, 16. Jh., mitten in der Altstadt. Oder <strong>ibis Styles Centre Petite France</strong> &ndash; modern, bezahlbar, top Lage. Samstag in Strasbourg ist beliebt &ndash; <em>fr&uuml;h buchen!</em></p>
+      </div>
+    </div>
+
+    <!-- ==================== TAG 3 ==================== -->
+    <div class="etappe fr">
+      <div class="etappe-header">
+        <span class="etappe-day">Tag 3 &ndash; Nordelsass</span>
+        <span class="etappe-date">Sonntag, 05. April</span>
+      </div>
+      <div class="etappe-route">Strasbourg &rarr; Wissembourg</div>
+      <div class="etappe-meta">
+        <span>&#x1f4cf; ca. 65 km</span>
+        <span>&#x2b06;&#xfe0f; flach bis leicht h&uuml;gelig</span>
+        <span>&#x1f6e3;&#xfe0f; Nordelsass-Radwege / EuroVelo 15</span>
+      </div>
+      <div class="etappe-desc">
+        Heute geht's durch das ruhige <strong>Nordelsa&szlig;</strong> &ndash; ganz anders als die touristische Weinstra&szlig;e weiter s&uuml;dlich. Hier ist es l&auml;ndlich und entspannt: Hopfenfelder, der riesige Haguenauer Wald und kleine Fachwerkd&ouml;rfer. Der Tag endet in <strong>Wissembourg</strong> &ndash; der Perle des Nordelsass, direkt an der deutschen Grenze.
+      </div>
+      <div class="besichtigung">
+        <h4>&#x1f3db;&#xfe0f; Besichtigungen unterwegs</h4>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3d8;&#xfe0f;</span>
+          <span><strong>Brumath</strong> &ndash; &Auml;lteste Stadt im Elsass (r&ouml;mische Gr&uuml;ndung &laquo;Brocomagus&raquo;). Kurzer Stopp f&uuml;rs Foto am r&ouml;mischen Erbe.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f332;</span>
+          <span><strong>Haguenau &amp; For&ecirc;t de Haguenau</strong> &ndash; Gr&ouml;&szlig;ter zusammenh&auml;ngender Wald im Elsass (14.000 ha!). Historisches Museum, Hopfenroute. Guter Mittagsstopp.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3fa;</span>
+          <span><strong>Betschdorf</strong> &ndash; Ber&uuml;hmt f&uuml;r blaue Steinzeug-Keramik. T&ouml;pferwerkst&auml;tten kann man besichtigen &ndash; cooles Mitbringsel!</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f426;</span>
+          <span><strong>Seebach</strong> &ndash; Eines der besterhaltenen Fachwerkd&ouml;rfer im Nordelsass. Geranien, Storchennester, Fotostopp.</span>
+        </div>
+      </div>
+      <div class="besichtigung" style="margin-top: 14px;">
+        <h4>&#x2b50; Abend in Wissembourg</h4>
+        <div class="besichtigung-item">
+          <span class="icon">&#x26ea;</span>
+          <span><strong>Abteikirche Saints-Pierre-et-Paul</strong> &ndash; Zweitgr&ouml;&szlig;te Kirche im Elsass (nach dem Strasbourger M&uuml;nster!). Gotisch, beeindruckend. Romanischer Kreuzgang.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3d8;&#xfe0f;</span>
+          <span><strong>Altstadt Wissembourg</strong> &ndash; Wundersch&ouml;n! Fachwerkh&auml;user am Lauter-Ufer, Salzhaus (gr&ouml;&szlig;tes Fachwerkhaus im Elsass!), Stadtmauer-Reste. Klein aber fein &ndash; absolutes Juwel.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f37d;&#xfe0f;</span>
+          <span><strong>Abendessen in einer Winstub</strong> &ndash; Wissembourg hat exzellente kleine Restaurants. Tipp: <em>Au Cygne</em> oder <em>Au Saumon</em>.</span>
+        </div>
+      </div>
+      <div class="uebernachtung">
+        <h4>&#x1f3e8; &Uuml;bernachtung: Wissembourg</h4>
+        <p><strong>H&ocirc;tel Au Cygne</strong> &ndash; Historisch, im Zentrum, gute K&uuml;che. Oder <strong>H&ocirc;tel Moulin de la Walk</strong> &ndash; ehemalige M&uuml;hle am Fluss, idyllisch! Alternativ Chambres d&rsquo;h&ocirc;tes &ndash; in Wissembourg gibt es charmante Optionen.</p>
+      </div>
+    </div>
+
+    <!-- ==================== TAG 4 ==================== -->
+    <div class="etappe de">
+      <div class="etappe-header">
+        <span class="etappe-day">Tag 4 &ndash; Heimfahrt</span>
+        <span class="etappe-date">Montag, 06. April</span>
+      </div>
+      <div class="etappe-route">Wissembourg &rarr; Heidelberg</div>
+      <div class="etappe-meta">
+        <span>&#x1f4cf; ca. 75 km</span>
+        <span>&#x2b06;&#xfe0f; flach (S&uuml;dpfalz / Rheinebene)</span>
+        <span>&#x1f6e3;&#xfe0f; Lauter-Radweg / S&uuml;dpfalz-Radweg / Kurpfalz-Route</span>
+      </div>
+      <div class="etappe-desc">
+        Die letzte Etappe nach Hause! Von Wissembourg &uuml;ber die Grenze zur&uuml;ck in die <strong>S&uuml;dpfalz</strong> &ndash; durch den Bienwald, &uuml;ber Kandel und W&ouml;rth, dann nordw&auml;rts &uuml;ber Germersheim und Speyer nach Heidelberg. Spargel- und Tabakfelder, Rheinauen und am Ende der m&auml;chtige Speyerer Dom. Ankunft nachmittags in Heidelberg &ndash; geschafft!
+      </div>
+      <div class="besichtigung">
+        <h4>&#x1f3db;&#xfe0f; Besichtigungen unterwegs</h4>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f332;</span>
+          <span><strong>Bienwald</strong> &ndash; Einer der gr&ouml;&szlig;ten zusammenh&auml;ngenden W&auml;lder der Pfalz. Sch&ouml;ne Waldpassage auf dem Rad.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f3f0;</span>
+          <span><strong>Festung Germersheim</strong> &ndash; Beeindruckende pf&auml;lzische Festung (19. Jh.) direkt am Rhein. Weissenburger Tor und Zeughaus anschauen.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x26ea;</span>
+          <span><strong>Speyerer Dom</strong> &ndash; UNESCO-Weltkulturerbe! Gr&ouml;&szlig;te romanische Kirche der Welt. Kaisergruft, Turm besteigen. DAS Highlight auf dem Heimweg.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x2721;&#xfe0f;</span>
+          <span><strong>Judenhof Speyer (SchPIRA)</strong> &ndash; Mittelalterliche Mikwe, UNESCO-Weltkulturerbe seit 2021.</span>
+        </div>
+        <div class="besichtigung-item">
+          <span class="icon">&#x1f37d;&#xfe0f;</span>
+          <span><strong>Ankunft Heidelberg!</strong> &ndash; 280 km, 4 Tage, 2 L&auml;nder. Ab zum Abendessen an der Alten Br&uuml;cke!</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">&#x1f4dd; Praktische Tipps</h2>
+
+    <div class="tip-box">
+      <h3>&#x26a0;&#xfe0f; Tag 1 ist der l&auml;ngste (85 km)</h3>
+      <p>Komplett flach, also gut machbar wenn ihr fr&uuml;h startet. Aber wenn ihr lieber aufteilen wollt: &Uuml;bernachtung in <strong>Karlsruhe</strong> einbauen &rarr; dann habt ihr 5 Tage mit ~55 km am ersten und ~45 km am zweiten Tag.</p>
+    </div>
+
+    <div class="tip-box">
+      <h3>&#x1f327;&#xfe0f; Wetter</h3>
+      <p>Anfang April im Oberrheingraben: 9&ndash;17&deg;C, oft sonnig, aber Schauer m&ouml;glich. Morgens frisch (5&ndash;8&deg;C), nachmittags angenehm. Schichten + Regenjacke griffbereit!</p>
+    </div>
+
+    <div class="tip-box">
+      <h3>&#x1f682; Notfall-Abk&uuml;rzungen</h3>
+      <p>Die ganze Strecke hat Bahnh&ouml;fe in der N&auml;he. N&uuml;tzlich: <strong>Karlsruhe &harr; Heidelberg</strong> (S-Bahn, 50 Min.), <strong>Offenburg &harr; Kehl</strong> (20 Min.), <strong>W&ouml;rth &harr; Karlsruhe</strong> (S-Bahn, 30 Min.), <strong>Speyer &harr; Heidelberg</strong> (45 Min.).</p>
+    </div>
+
+    <div class="tip-box">
+      <h3>&#x1f4f1; Navigation</h3>
+      <p><strong>Komoot-App</strong> mit Offline-Karten herunterladen! Rheinradweg und S&uuml;dpfalz-Radweg auf deutscher Seite gut ausgeschildert. Im Elsass auf gr&uuml;ne Véloroute-Schilder achten.</p>
+    </div>
+
+    <h2 class="section-title">&#x1f392; Packliste</h2>
+
+    <div class="checklist">
+      <h3>Ausr&uuml;stung</h3>
+      <div class="checklist-grid">
+        <div class="checklist-item">Fahrradtaschen (Gep&auml;cktr&auml;ger)</div>
+        <div class="checklist-item">Regenjacke &amp; Regenhose</div>
+        <div class="checklist-item">Helm</div>
+        <div class="checklist-item">Fahrradschloss</div>
+        <div class="checklist-item">Flickzeug &amp; Ersatzschlauch</div>
+        <div class="checklist-item">Luftpumpe</div>
+        <div class="checklist-item">Multitool</div>
+        <div class="checklist-item">Fahrradbeleuchtung</div>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <h3>Kleidung</h3>
+      <div class="checklist-grid">
+        <div class="checklist-item">Radhose gepolstert (2x)</div>
+        <div class="checklist-item">Funktionsshirts (2&ndash;3x)</div>
+        <div class="checklist-item">Fleece / leichte Jacke</div>
+        <div class="checklist-item">Radhandschuhe</div>
+        <div class="checklist-item">Abendoutfit (1x leicht)</div>
+        <div class="checklist-item">Wechselschuhe</div>
+        <div class="checklist-item">Buff / Stirnband</div>
+        <div class="checklist-item">Sonnenbrille</div>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <h3>Sonstiges</h3>
+      <div class="checklist-grid">
+        <div class="checklist-item">Personalausweis</div>
+        <div class="checklist-item">Europ. Krankenversicherungskarte</div>
+        <div class="checklist-item">Sonnencreme</div>
+        <div class="checklist-item">Trinkflaschen (2x)</div>
+        <div class="checklist-item">Powerbank</div>
+        <div class="checklist-item">Komoot (Offline-Karten!)</div>
+        <div class="checklist-item">Bargeld &amp; Karte</div>
+        <div class="checklist-item">Erste-Hilfe-Set (klein)</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Gute Fahrt &amp; bon voyage! &#x1f6b2; &#x1f1e9;&#x1f1ea;&#x1f1eb;&#x1f1f7;
+    </div>
+
+  </div>
+
+</body>
+</html>
