@@ -1,2 +1,0 @@
-# pm-atelier
-Projektmanagement-Tools
